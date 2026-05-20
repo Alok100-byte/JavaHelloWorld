@@ -3,6 +3,11 @@ pipeline {
 
     stages {
 
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/Alok100-byte/JavaHelloWorld.git/'
+            }
+        }
         stage('Build') {
             steps {
                 sh 'mvn clean package'
