@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     stages {
@@ -9,27 +10,33 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Maven Project') {
             steps {
                 sh 'mvn clean package'
             }
         }
 
-        stage('Run Application') {
+        stage('Verify Target Folder') {
             steps {
-                sh 'java -cp target/JavaHelloWorld-1.0.jar'
+                sh 'ls -lrt target'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-image-app .'
+                sh 'docker build -t sample-java-app .'
+            }
+        }
+
+        stage('Remove Old Container') {
+            steps {
+                sh 'docker rm -f java-container || true'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -itd -p 8080:80 --name my-container my-image-app'
+                sh 'docker run -d -p 8080:8080 --name java-container sample-java-app'
             }
         }
 
@@ -41,12 +48,13 @@ pipeline {
     }
 
     post {
+
         success {
-            echo 'Build completed successfully!'
+            echo 'Pipeline executed successfully!'
         }
 
         failure {
-            echo 'Build failed!'
+            echo 'Pipeline failed!'
         }
     }
 }
