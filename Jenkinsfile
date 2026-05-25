@@ -5,9 +5,10 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/Alok100-byte/JavaHelloWorld.git/'
+                git 'https://github.com/Alok100-byte/JavaHelloWorld.git'
             }
         }
+
         stage('Build') {
             steps {
                 sh 'mvn clean package'
@@ -19,12 +20,20 @@ pipeline {
                 sh 'java -cp target/JavaHelloWorld-1.0.jar App'
             }
         }
-        stage('Run Docker container') {
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t my-image-app .'
+            }
+        }
+
+        stage('Run Docker Container') {
             steps {
                 sh 'docker run -itd -p 8080:80 --name my-container my-image-app'
             }
         }
-        stage('Verify container') {
+
+        stage('Verify Container') {
             steps {
                 sh 'docker ps'
             }
