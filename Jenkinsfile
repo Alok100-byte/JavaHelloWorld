@@ -17,7 +17,7 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                sh 'java -cp target/JavaHelloWorld-1.0.jar App'
+                sh 'java -cp target/JavaHelloWorld-1.0.jar'
             }
         }
 
