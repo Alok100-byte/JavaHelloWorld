@@ -36,7 +36,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 8080:8080 --name java-container sample-java-app'
+                sh 'docker run -d -p 8000:8000 --name java-container sample-java-app'
             }
         }
 
